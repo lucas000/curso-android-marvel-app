@@ -27,7 +27,17 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavMain.setupWithNavController(navController)
 
         appBarConfiguration = AppBarConfiguration(
-            setOf()
+            setOf(R.id.characteresFragment, R.id.favoritesFragment, R.id.aboutFragment)
+            // onde passa os destinos inicias da navegação
         )
+
+        binding.toolbarApp.setupWithNavController(navController, appBarConfiguration)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            val isTopLevelDistribution = appBarConfiguration.topLevelDestinations.contains(destination.id)
+            if(!isTopLevelDistribution) {
+                binding.toolbarApp.setNavigationIcon(R.drawable.ic_back)
+            }
+        }
     }
 }
