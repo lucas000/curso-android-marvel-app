@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/characteresFragment"
-        android:name="com.example.marvelapp.presentation.characters.CharacteresFragment"
+        android:name="com.example.marvelapp.presentation.characters.CharactersFragment"
         android:label="@string/characters_screen_title"
-        tools:layout="@layout/fragment_characteres" />
+        tools:layout="@layout/fragment_characters" />
 </navigation>
