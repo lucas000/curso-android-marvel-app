@@ -71,4 +71,30 @@ class CharactersPageSourceTest {
             )
         }
     }
+
+    @Test
+    fun `should return an error load result when load is called`() {
+        runTest {
+
+            // Arrange
+            val exception = RuntimeException()
+            whenever(remoteDataSource.fetchCharacters(any()))
+                .thenThrow(exception)
+
+            // Act
+            val result = charactersPageSource.load(
+                PagingSource.LoadParams.Refresh(
+                    null,
+                    20,
+                    placeholdersEnabled = false
+                )
+            )
+
+            // Assert
+            assertEquals(
+                PagingSource.LoadResult.Error<Int, Character>(exception),
+                result
+            )
+        }
+    }
 }
