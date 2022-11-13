@@ -3,47 +3,45 @@ package com.example.marvelapp.presentation.characters
 import androidx.paging.PagingData
 import com.example.core.usecase.GetCharactersUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import com.example.core.domain.model.Character
+import com.example.testing.MainCoroutineRule
+import com.example.testing.model.CharacterFactory
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.whenever
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.*
-import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Rule
 
 @RunWith(MockitoJUnitRunner::class)
 class CharactersViewModelTest {
 
     @ExperimentalCoroutinesApi
-    val testDispatcher: TestDispatcher = StandardTestDispatcher()
+    @get:Rule
+    var mainCoroutineRule = MainCoroutineRule()
 
     @Mock
     lateinit var getCharactersUseCase: GetCharactersUseCase
 
     private lateinit var charactersViewModel: CharactersViewModel
 
+    private val charactersFactory = CharacterFactory()
+
     private val pagingDataCharacter = PagingData.from(
         listOf(
-            Character(
-                "3-D Man",
-                "https://i.annihil.us/u/prod/marvel/i/mg/3/20/535fecbbb9784.jpg"),
-            Character(
-                "A-Bomb (HAS)",
-                "https://i.annihil.us/u/prod/marvel/i/mg/3/20/5232158de5b16.jpg")
+            charactersFactory.create(CharacterFactory.Hero.ThreeDMan),
+            charactersFactory.create(CharacterFactory.Hero.ABomb)
         )
     )
 
     @Before
     fun setUp() {
-        Dispatchers.setMain(testDispatcher)
         charactersViewModel = CharactersViewModel(getCharactersUseCase)
     }
 
@@ -70,15 +68,5 @@ class CharactersViewModelTest {
 
             charactersViewModel.charactersPagingData("")
         }
-    }
-
-    /* If you're using coroutines in your app, any local test that involves calling
-    code in a view model is highly likely to call code which uses viewModelScope.
-    Instead of copying and pasting the code set up and tear down the TestCoroutineDispatcher
-    into each test class, you can make a custom JUnit rule to avoid this boilerplate code. */
-    @ExperimentalCoroutinesApi
-    @After
-    fun tearDownDispatcher() {
-        Dispatchers.resetMain()
     }
 }
