@@ -8,7 +8,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
-import com.example.core.domain.model.Character
 import com.example.testing.MainCoroutineRule
 import com.example.testing.model.CharacterFactory
 import com.nhaarman.mockitokotlin2.any
