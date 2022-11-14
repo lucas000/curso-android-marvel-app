@@ -17,6 +17,15 @@ apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
 android {
     compileSdkVersion 33
 
+    signingConfigs {
+        release {
+            storeFile file('F:\\cursoandroidmoderno\\curso-android-marvel-app\\store\\marvel_app_key_store.jks')
+            storePassword 'Lucas@20120427'
+            keyAlias 'marvel-app'
+            keyPassword 'Lucas@20120427'
+        }
+    }
+
     defaultConfig {
         applicationId "com.example.marvelapp"
         minSdkVersion 23
@@ -45,6 +54,7 @@ android {
                     'proguard-rules-staging.pro'
         }
         release {
+            signingConfig signingConfigs.release
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
