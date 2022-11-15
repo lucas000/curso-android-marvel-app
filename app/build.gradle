@@ -141,9 +141,15 @@ dependencies {
     testImplementation project(":testing")
     testImplementation "androidx.room:room-testing:$room_version"
 
-    // Instrumentation tests
+    // Instrumentation tests and Orchestrator
+    def espresso_version = "3.3.0"
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    androidTestImplementation 'androidx.test:runner:1.1.0'
+    androidTestUtil 'androidx.test:orchestrator:1.4.1'
+
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso_version"
 
     // Fragment Testing
     def fragment_version = "1.4.0"

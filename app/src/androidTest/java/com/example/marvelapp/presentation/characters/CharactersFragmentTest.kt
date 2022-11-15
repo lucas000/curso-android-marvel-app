@@ -2,8 +2,8 @@ package com.example.marvelapp.presentation.characters
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.marvelapp.R
 import com.example.marvelapp.extension.asJsonString
@@ -44,6 +44,29 @@ class CharactersFragmentTest {
 
         onView(
             withId(R.id.recycler_characters)
+        ).check(
+            matches(isDisplayed())
+        )
+    }
+
+    @Test
+    fun shouldLoadMoreCharacters_whenNewPageIsRequested() {
+        // Arrange
+        with(server) {
+            enqueue(MockResponse().setBody("characters_p1.json".asJsonString()))
+            enqueue(MockResponse().setBody("characters_p2.json".asJsonString()))
+        }
+
+        // Action
+        onView(
+            withId(R.id.recycler_characters)
+        ).perform(
+            RecyclerViewActions.scrollToPosition<CharactersViewHolder>(20)
+        )
+
+        // Assert
+        onView(
+            withText("Amora")
         ).check(
             matches(isDisplayed())
         )
