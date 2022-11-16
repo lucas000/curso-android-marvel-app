@@ -16,7 +16,7 @@ dependencies {
 
     // Retrofit
     def retrofit_version = '2.9.0'
-    def gson_version = '2.9.0'
+    def gson_version = '2.10'
     api "com.squareup.retrofit2:retrofit:$retrofit_version"
     api "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
