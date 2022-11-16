@@ -2,6 +2,4 @@ package com.example.marvelapp.presentation.detail
 
 import androidx.lifecycle.ViewModel
 
-class DetailViewModel : ViewModel() {
-    // TODO: Implement the ViewModel
-}
+class DetailViewModel : ViewModel()
