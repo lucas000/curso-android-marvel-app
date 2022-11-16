@@ -5,7 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.domain.model.Comic
-import com.example.core.usecase.GetComicsUseCase
+import com.example.core.domain.model.Event
+import com.example.core.usecase.GetCharacterCategoriesUseCase
 import com.example.core.usecase.base.ResultStatus
 import com.example.marvelapp.R
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,37 +16,54 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val getComicsUseCase: GetComicsUseCase
+    private val getCharacterCategoriesUseCase: GetCharacterCategoriesUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableLiveData<UiState>()
     val uiState: LiveData<UiState> get() = _uiState
 
     fun getComics(characterId: Int) = viewModelScope.launch {
-        getComicsUseCase.invoke(GetComicsUseCase.GetComicsParams(characterId))
+        getCharacterCategoriesUseCase
+            .invoke(GetCharacterCategoriesUseCase.GetCharacterCategoriesParams(characterId))
             .watchStatus()
     }
 
-    private fun Flow<ResultStatus<List<Comic>>>.watchStatus() = viewModelScope.launch{
-        collect { status ->
-           _uiState.value = when(status) {
-                ResultStatus.Loading -> UiState.Loading
-                is ResultStatus.Success -> {
-                    val detailChildList = status.data.map { DetailChildVE(it.id, it.imageUrl) }
+    private fun Flow<ResultStatus<Pair<List<Comic>, List<Event>>>>.watchStatus() =
+        viewModelScope.launch{
+            collect { status ->
+               _uiState.value = when(status) {
+                    ResultStatus.Loading -> UiState.Loading
+                    is ResultStatus.Success -> {
 
-                    val detailParentList = listOf(
-                        DetailParentVE(
-                            R.string.details_comics_category,
-                            detailChildList
-                        )
-                    )
+                        val detailParentList = mutableListOf<DetailParentVE>()
 
-                    UiState.Success(detailParentList)
+                        val comics = status.data.first
+                        if (comics.isNotEmpty()) {
+                            comics.map { comic ->
+                                DetailChildVE(comic.id, comic.imageUrl)
+                            }.also { comicList ->
+                                detailParentList.add(
+                                    DetailParentVE(R.string.details_comics_category, comicList)
+                                )
+                            }
+                        }
+
+                        val events = status.data.second
+                        if (events.isNotEmpty()) {
+                            events.map { event ->
+                                DetailChildVE(event.id, event.imageUrl)
+                            }.also { eventList ->
+                                detailParentList.add(
+                                    DetailParentVE(R.string.details_events_category, eventList)
+                                )
+                            }
+                        }
+                        UiState.Success(detailParentList)
+                    }
+                    is ResultStatus.Error -> UiState.Error
                 }
-                is ResultStatus.Error -> UiState.Error
             }
         }
-    }
 
     sealed class UiState {
         object Loading : UiState()
