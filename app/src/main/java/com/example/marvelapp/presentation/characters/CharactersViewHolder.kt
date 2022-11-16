@@ -1,7 +1,6 @@
 package com.example.marvelapp.presentation.characters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -20,6 +19,7 @@ class CharactersViewHolder(
 
     fun bind(character: Character) {
         textName.text = character.name
+        imageCharacter.transitionName = character.name
         Glide.with(itemView)
             .load(character.imageUrl)
             .fallback(R.drawable.ic_img_loading_error)
@@ -32,11 +32,11 @@ class CharactersViewHolder(
 
     companion object {
         fun create(
-            parant: ViewGroup,
-            onItemClick: (character: Character, view: View) -> Unit
+            parent: ViewGroup,
+            onItemClick: OnCharacterItemClick
         ): CharactersViewHolder {
-            val inflater = LayoutInflater.from(parant.context)
-            val itemBinding = ItemCharacterBinding.inflate(inflater, parant, false)
+            val inflater = LayoutInflater.from(parent.context)
+            val itemBinding = ItemCharacterBinding.inflate(inflater, parent, false)
             return CharactersViewHolder(itemBinding, onItemClick)
         }
     }
