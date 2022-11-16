@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.marvelapp.R
 import com.example.marvelapp.databinding.ItemChildDetailBinding
 import com.example.marvelapp.framework.imageloader.ImageLoader
 
@@ -32,7 +31,7 @@ class DetailChildAdapter(
         private val imageCategory: ImageView = itemBinding.imageItemCategory
 
         fun bind(detailChildVE: DetailChildVE) {
-            imageLoader.load(imageCategory, detailChildVE.imageUrl, R.drawable.ic_img_loading_error)
+            imageLoader.load(imageCategory, detailChildVE.imageUrl)
         }
 
         companion object {
