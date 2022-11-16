@@ -1,10 +1,12 @@
 package com.example.marvelapp.presentation.detail
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import com.example.marvelapp.R
@@ -18,6 +20,8 @@ class DetailFragment : Fragment() {
 
     private var _binding: FragmentDetailBinding? = null
     private val binding: FragmentDetailBinding get() = _binding!!
+
+    private val viewModel: DetailViewModel by viewModels()
 
     @Inject
     lateinit var imageLoader: ImageLoader
@@ -35,6 +39,7 @@ class DetailFragment : Fragment() {
         _binding = this
     }.root
 
+    @Suppress("MagicNumber")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -43,7 +48,20 @@ class DetailFragment : Fragment() {
             transitionName = detailViewArg.name
             imageLoader.load(this, detailViewArg.imageUrl, R.drawable.ic_img_loading_error)
         }
+
         setSharedElementTransitionOnEnter()
+
+        viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
+            val logResult = when (uiState) {
+                DetailViewModel.UiState.Loading -> "Loading comics..."
+                is DetailViewModel.UiState.Success -> uiState.comics.toString()
+                DetailViewModel.UiState.Error -> "Error when loading"
+            }
+
+            Log.d(DetailFragment::class.simpleName, logResult)
+        }
+
+        viewModel.getComics(detailViewArg.characterId)
     }
 
     // Define a animação da transição como "move"

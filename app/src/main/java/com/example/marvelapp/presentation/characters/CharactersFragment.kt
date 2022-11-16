@@ -68,7 +68,11 @@ class CharactersFragment : Fragment() {
             val directions = CharactersFragmentDirections
                 .actionCharacteresFragmentToDetailFragment(
                     character.name,
-                    DetailViewArg(character.name, character.imageUrl)
+                    DetailViewArg(
+                        characterId = character.id,
+                        name = character.name,
+                        imageUrl = character.imageUrl
+                    )
                 )
             findNavController().navigate(directions, extras)
         }
