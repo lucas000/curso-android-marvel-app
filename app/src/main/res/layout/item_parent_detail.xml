@@ -23,7 +23,7 @@
         android:clipToPadding="false"
         android:orientation="horizontal"
         tools:listitem="@layout/item_child_detail"
-        tools:itemCount="3"
+        tools:itemCount="5"
         app:layout_constraintBaseline_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
