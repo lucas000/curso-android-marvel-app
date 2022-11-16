@@ -10,6 +10,7 @@
         style="@style/TextAppearance.MaterialComponents.Headline5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/details_comics_category" />
@@ -18,7 +19,7 @@
         android:id="@+id/recycler_child_detail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginVertical="8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:clipToPadding="false"
         android:orientation="horizontal"
