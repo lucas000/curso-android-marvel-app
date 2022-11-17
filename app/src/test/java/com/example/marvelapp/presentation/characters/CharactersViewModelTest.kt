@@ -18,10 +18,10 @@ import kotlinx.coroutines.test.*
 import org.junit.Assert.assertNotNull
 import org.junit.Rule
 
+@ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class CharactersViewModelTest {
 
-    @ExperimentalCoroutinesApi
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
