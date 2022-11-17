@@ -49,19 +49,28 @@ class DetailFragment : Fragment() {
         setSharedElementTransitionOnEnter()
 
         viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
-            when (uiState) {
-                DetailViewModel.UiState.Loading -> {
-                }
-                is DetailViewModel.UiState.Success -> binding.recyclerParentDetail.run {
-                    setHasFixedSize(true)
-                    adapter = DetailParentAdapter(uiState.detailParentList, imageLoader)
+            binding.flipperDetail.displayedChild = when (uiState) {
+                DetailViewModel.UiState.Loading -> FLIPPER_CHILD_POSITION_LOADING
+                is DetailViewModel.UiState.Success -> {
+                    binding.recyclerParentDetail.run {
+                        setHasFixedSize(true)
+                        adapter = DetailParentAdapter(uiState.detailParentList, imageLoader)
+                    }
+                    FLIPPER_CHILD_POSITION_DETAIL
                 }
                 DetailViewModel.UiState.Error -> {
+                    FLIPPER_CHILD_POSITION_ERROR
+                    binding.includeErrorView.buttonRetry.setOnClickListener {
+                        viewModel.getCharaterCategories(detailViewArg.characterId)
+                    }
+                    FLIPPER_CHILD_POSITION_ERROR
                 }
+
+                DetailViewModel.UiState.Empty -> FLIPPER_CHILD_POSITION_EMPTY
             }
         }
 
-        viewModel.getComics(detailViewArg.characterId)
+        viewModel.getCharaterCategories(detailViewArg.characterId)
     }
 
     // Define a animação da transição como "move"
@@ -75,5 +84,12 @@ class DetailFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private const val FLIPPER_CHILD_POSITION_LOADING = 0
+        private const val FLIPPER_CHILD_POSITION_DETAIL = 1
+        private const val FLIPPER_CHILD_POSITION_ERROR = 2
+        private const val FLIPPER_CHILD_POSITION_EMPTY = 3
     }
 }
