@@ -3,7 +3,7 @@ package com.example.core.usecase
 import com.example.core.data.repository.CharactersRepository
 import com.example.core.domain.model.Comic
 import com.example.core.domain.model.Event
-import com.example.core.usecase.base.AppCoroutinesDispatchers
+import com.example.core.usecase.base.CoroutinesDispatchers
 import com.example.core.usecase.base.ResultStatus
 import com.example.core.usecase.base.UseCase
 import kotlinx.coroutines.async
@@ -21,7 +21,7 @@ interface GetCharacterCategoriesUseCase {
 
 class GetCharacterCategoriesUseCaseImpl @Inject constructor(
     private val repository: CharactersRepository,
-    private val dispatchers: AppCoroutinesDispatchers
+    private val dispatchers: CoroutinesDispatchers
 ) : GetCharacterCategoriesUseCase,
     UseCase<GetCharacterCategoriesUseCase.GetCharacterCategoriesParams,
             Pair<List<Comic>, List<Event>>>() {
@@ -30,7 +30,7 @@ class GetCharacterCategoriesUseCaseImpl @Inject constructor(
         params: GetCharacterCategoriesUseCase.GetCharacterCategoriesParams
     ): ResultStatus<Pair<List<Comic>, List<Event>>> {
 
-        return withContext(dispatchers.io) {
+        return withContext(dispatchers.io()) {
             val comicsDeferred = async { repository.getComics(params.characterId) }
             val eventsDeferred = async { repository.getEvents(params.characterId) }
 
