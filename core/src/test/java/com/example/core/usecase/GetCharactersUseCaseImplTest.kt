@@ -1,9 +1,7 @@
-package com.example.marvelapp.core.usecase
+package com.example.core.usecase
 
 import androidx.paging.PagingConfig
 import com.example.core.data.repository.CharactersRepository
-import com.example.core.usecase.GetCharactersUseCase
-import com.example.core.usecase.GetCharactersUseCaseImpl
 import com.example.testing.MainCoroutineRule
 import com.example.testing.model.CharacterFactory
 import com.example.testing.pagingsource.PagingSourceFactory
