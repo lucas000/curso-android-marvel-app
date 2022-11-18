@@ -1,6 +1,12 @@
 package com.example.marvelapp.presentation.characters
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.distinctUntilChanged
+import androidx.lifecycle.switchMap
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.asLiveData
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
