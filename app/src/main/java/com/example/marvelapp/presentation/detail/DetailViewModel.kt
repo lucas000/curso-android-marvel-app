@@ -25,6 +25,12 @@ class DetailViewModel @Inject constructor(
         coroutinesDispatchers.main(),
         getCharacterCategoriesUseCase
     )
+
+    val favorite = FavoriteUiActionStateLiveData(
+        coroutinesDispatchers.main(),
+        addFavoriteUseCase
+    )
+
     private val _uiState = MutableLiveData<UiState>()
     val uiState: LiveData<UiState> get() = _uiState
 
