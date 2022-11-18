@@ -48,6 +48,30 @@ class DetailFragment : Fragment() {
 
         setSharedElementTransitionOnEnter()
 
+        observeUiState(detailViewArg)
+        observeFavoriteUiSate()
+
+        viewModel.getCharacterCategories(detailViewArg.characterId)
+
+        binding.imageFavoriteIcon.setOnClickListener {
+            viewModel.updateFavorite(detailViewArg)
+        }
+    }
+
+    private fun observeFavoriteUiSate() {
+        viewModel.favoriteUiState.observe(viewLifecycleOwner) { favoriteUiState ->
+            binding.flipperDetail.displayedChild = when(favoriteUiState) {
+                DetailViewModel.FavoriteUiState.Loading -> FLIPPER_FAVORITE_CHILD_POSITION_LOADING
+                is DetailViewModel.FavoriteUiState.FavoriteIcon -> {
+                    binding.imageFavoriteIcon.setImageResource(favoriteUiState.icon)
+                    FLIPPER_FAVORITE_CHILD_POSITION_SUCCESS
+                }
+            }
+
+        }
+    }
+
+    private fun observeUiState(detailViewArg: DetailViewArg) {
         viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
             binding.flipperDetail.displayedChild = when (uiState) {
                 DetailViewModel.UiState.Loading -> FLIPPER_CHILD_POSITION_LOADING
@@ -69,8 +93,6 @@ class DetailFragment : Fragment() {
                 DetailViewModel.UiState.Empty -> FLIPPER_CHILD_POSITION_EMPTY
             }
         }
-
-        viewModel.getCharacterCategories(detailViewArg.characterId)
     }
 
     // Define a animação da transição como "move"
@@ -91,5 +113,7 @@ class DetailFragment : Fragment() {
         private const val FLIPPER_CHILD_POSITION_DETAIL = 1
         private const val FLIPPER_CHILD_POSITION_ERROR = 2
         private const val FLIPPER_CHILD_POSITION_EMPTY = 3
+        private const val FLIPPER_FAVORITE_CHILD_POSITION_SUCCESS = 0
+        private const val FLIPPER_FAVORITE_CHILD_POSITION_LOADING = 1
     }
 }

@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 interface FavoriteDao {
 
     @Query("SELECT * FROM ${DbConstants.FAVORITES_TABLE_NAME}")
-    suspend fun loadFavorites(): Flow<List<FavoriteEntity>>
+    fun loadFavorites(): Flow<List<FavoriteEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFavorite(favoriteEntity: FavoriteEntity)

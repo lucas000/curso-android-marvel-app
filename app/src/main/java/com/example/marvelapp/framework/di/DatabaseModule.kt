@@ -17,9 +17,12 @@ object DatabaseModule {
     @Provides
     fun provideAppDatabase(
         @ApplicationContext context: Context
-    ) = Room.databaseBuilder(
+    ) : AppDatabase = Room.databaseBuilder(
         context,
         AppDatabase::class.java,
         DbConstants.APP_DATABASE_NAME
     ).build()
+
+    @Provides
+    fun provideFavoriteDao(appDatabase: AppDatabase) = appDatabase.favoriteDao()
 }
