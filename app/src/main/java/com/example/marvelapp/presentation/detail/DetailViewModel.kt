@@ -11,7 +11,7 @@ import javax.inject.Inject
 class DetailViewModel @Inject constructor(
     getCharacterCategoriesUseCase: GetCharacterCategoriesUseCase,
     addFavoriteUseCase: AddFavoriteUseCase,
-     coroutinesDispatchers: CoroutinesDispatchers
+    coroutinesDispatchers: CoroutinesDispatchers
 ) : ViewModel() {
 
     val categories = UiActionStateLiveData(

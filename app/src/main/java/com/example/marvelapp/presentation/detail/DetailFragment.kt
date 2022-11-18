@@ -89,7 +89,7 @@ class DetailFragment : Fragment() {
                 UiActionStateLiveData.UiState.Error -> {
                     FLIPPER_CHILD_POSITION_ERROR
                     binding.includeErrorView.buttonRetry.setOnClickListener {
-                        viewModel.getCharacterCategories(detailViewArg.characterId)
+                        viewModel.categories.load(detailViewArg.characterId)
                     }
                     FLIPPER_CHILD_POSITION_ERROR
                 }
