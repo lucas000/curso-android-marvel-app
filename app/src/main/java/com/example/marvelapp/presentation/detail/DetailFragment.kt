@@ -61,7 +61,7 @@ class DetailFragment : Fragment() {
                 DetailViewModel.UiState.Error -> {
                     FLIPPER_CHILD_POSITION_ERROR
                     binding.includeErrorView.buttonRetry.setOnClickListener {
-                        viewModel.getCharaterCategories(detailViewArg.characterId)
+                        viewModel.getCharacterCategories(detailViewArg.characterId)
                     }
                     FLIPPER_CHILD_POSITION_ERROR
                 }
@@ -70,7 +70,7 @@ class DetailFragment : Fragment() {
             }
         }
 
-        viewModel.getCharaterCategories(detailViewArg.characterId)
+        viewModel.getCharacterCategories(detailViewArg.characterId)
     }
 
     // Define a animação da transição como "move"
