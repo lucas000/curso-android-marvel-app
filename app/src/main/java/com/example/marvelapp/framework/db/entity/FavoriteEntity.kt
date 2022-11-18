@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.core.data.DbConstants
+import com.example.core.domain.model.Character
 
 @Entity(tableName = DbConstants.FAVORITES_TABLE_NAME)
 data class FavoriteEntity(
@@ -15,3 +16,7 @@ data class FavoriteEntity(
     @ColumnInfo(name = DbConstants.FAVORITES_COLUMN_INFO_IMAGE)
     val imageUrl: String
 )
+
+fun List<FavoriteEntity>.toCharacterModel() = map {
+    Character(it.id, it.name, it.imageUrl)
+}
