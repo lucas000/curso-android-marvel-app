@@ -56,18 +56,39 @@ class GetCharacterCategoriesUseCaseImplTest {
             // Assert
             val resultList = result.toList()
             assertEquals(ResultStatus.Loading, resultList[0])
-            assertTrue(resultList[1] is ResultStatus.Error)
+            assertTrue(resultList[1] is ResultStatus.Success)
         }
 
     @Test
     fun `should return Error from ResultStatus when get events request returns error`() =
         runTest {
-            // TODO: Implement test
+            // Arrange
+            whenever(repository.getComics(character.id)).thenAnswer{ throw Throwable() }
+
+            // Act
+            val result = getCharacterCategoriesUseCase
+                .invoke(GetCharacterCategoriesUseCase.GetCharacterCategoriesParams(character.id))
+
+            // Assert
+            val resultList = result.toList()
+            assertEquals(ResultStatus.Loading, resultList[0])
+            assertTrue(resultList[1] is ResultStatus.Error)
         }
 
     @Test
     fun `should return Error from ResultStatus when get comics request returns error`() =
         runTest {
-            // TODO: Implement test
+            // Arrange
+            whenever(repository.getComics(character.id)).thenReturn(comics)
+            whenever(repository.getEvents(character.id)).thenAnswer{ throw Throwable() }
+
+            // Act
+            val result = getCharacterCategoriesUseCase
+                .invoke(GetCharacterCategoriesUseCase.GetCharacterCategoriesParams(character.id))
+
+            // Assert
+            val resultList = result.toList()
+            assertEquals(ResultStatus.Loading, resultList[0])
+            assertTrue(resultList[1] is ResultStatus.Error)
         }
 }
