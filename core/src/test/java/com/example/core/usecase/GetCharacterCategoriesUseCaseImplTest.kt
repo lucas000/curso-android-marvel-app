@@ -1,14 +1,20 @@
 package com.example.core.usecase
 
 import com.example.core.data.repository.CharactersRepository
-import com.example.core.usecase.base.CoroutinesDispatchers
+import com.example.core.usecase.base.ResultStatus
 import com.example.testing.MainCoroutineRule
+import com.example.testing.model.CharacterFactory
 import com.example.testing.model.ComicFactory
 import com.example.testing.model.EventFactory
+import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.MainCoroutineDispatcher
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
@@ -24,6 +30,7 @@ class GetCharacterCategoriesUseCaseImplTest {
 
     private lateinit var getCharacterCategoriesUseCase: GetCharacterCategoriesUseCase
 
+    private val character = CharacterFactory().create(CharacterFactory.Hero.ThreeDMan)
     private val comics = listOf(ComicFactory().create(ComicFactory.FakeComic.FakeComic1))
     private val events = listOf(EventFactory().create(EventFactory.FakeEvent.FakeEvent1))
 
@@ -35,4 +42,32 @@ class GetCharacterCategoriesUseCaseImplTest {
         )
     }
 
+    @Test
+    fun `should return Success from ResultStatus when get both requests return success`() =
+        runTest {
+            // Arrange
+            whenever(repository.getComics(character.id)).thenReturn(comics)
+            whenever(repository.getEvents(character.id)).thenReturn(events)
+
+            // Act
+            val result = getCharacterCategoriesUseCase
+                .invoke(GetCharacterCategoriesUseCase.GetCharacterCategoriesParams(character.id))
+
+            // Assert
+            val resultList = result.toList()
+            assertEquals(ResultStatus.Loading, resultList[0])
+            assertTrue(resultList[1] is ResultStatus.Error)
+        }
+
+    @Test
+    fun `should return Error from ResultStatus when get events request returns error`() =
+        runTest {
+            // TODO: Implement test
+        }
+
+    @Test
+    fun `should return Error from ResultStatus when get comics request returns error`() =
+        runTest {
+            // TODO: Implement test
+        }
 }
