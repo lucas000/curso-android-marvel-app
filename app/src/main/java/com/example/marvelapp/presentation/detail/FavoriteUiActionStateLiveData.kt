@@ -26,18 +26,18 @@ class FavoriteUiActionStateLiveData(
                 is Action.Update -> {
                     it.detailViewArg.run {
                         addFavoriteUseCase.invoke(
-                            AddFavoriteUseCase.Params(characterId, name, imageUrl))
-                            .watchStatus(
-                                loading = {
-                                   emit(UiState.Loading)
-                                },
-                                success = {
-                                    emit(UiState.Icon(R.drawable.ic_favorite_checked))
-                                },
-                                error = {
-                                    emit(UiState.Error(R.string.error_add_favorite))
-                                }
-                            )
+                            AddFavoriteUseCase.Params(characterId, name, imageUrl)
+                        ).watchStatus(
+                            loading = {
+                               emit(UiState.Loading)
+                            },
+                            success = {
+                                emit(UiState.Icon(R.drawable.ic_favorite_checked))
+                            },
+                            error = {
+                                emit(UiState.Error(R.string.error_add_favorite))
+                            }
+                        )
                     }
                 }
             }
