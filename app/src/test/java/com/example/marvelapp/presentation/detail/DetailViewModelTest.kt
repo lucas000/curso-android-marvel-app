@@ -231,7 +231,7 @@ class DetailViewModelTest {
             whenever(checkFavoriteUseCase.invoke(any()))
                 .thenReturn(
                     flowOf(
-                        ResultStatus.Success(true)
+                        ResultStatus.Success(false)
                     )
                 )
             // Act
@@ -243,6 +243,6 @@ class DetailViewModelTest {
             )
             val uiState =
                 detailViewModel.favorite.state.value as FavoriteUiActionStateLiveData.UiState.Icon
-            assertEquals(R.drawable.ic_favorite_checked, uiState.icon)
+            assertEquals(R.drawable.ic_favorite_unchecked, uiState.icon)
         }
 }
