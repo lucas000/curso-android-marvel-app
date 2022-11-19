@@ -9,9 +9,10 @@ import com.example.core.usecase.GetFavoritesUseCase
 import com.example.core.usecase.base.CoroutinesDispatchers
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
+import javax.inject.Inject
 
 @HiltViewModel
-class FavoritesViewModel(
+class FavoritesViewModel @Inject constructor(
     private val getFavoritesUseCase: GetFavoritesUseCase,
     private val coroutinesDispatchers: CoroutinesDispatchers
 ) : ViewModel() {
@@ -44,6 +45,7 @@ class FavoritesViewModel(
             }
         }
     }
+
     fun getAll() {
         action.value = Action.GetAll
     }

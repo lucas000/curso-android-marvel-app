@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.example.marvelapp.databinding.FragmentFavoritesBinding
 import com.example.marvelapp.framework.imageloader.ImageLoader
 import com.example.marvelapp.presentation.common.getGenericAdapterOf
@@ -16,6 +17,8 @@ class FavoritesFragment : Fragment() {
 
     private var _binding: FragmentFavoritesBinding? = null
     private val binding: FragmentFavoritesBinding get() = _binding!!
+
+    private val viewModel: FavoritesViewModel by viewModels()
 
     @Inject
     lateinit var imageLoader: ImageLoader
@@ -40,6 +43,21 @@ class FavoritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initFavoritesAdapter()
+
+        viewModel.state.observe(viewLifecycleOwner) { uiState ->
+            binding.flipperFavorites.displayedChild = when(uiState) {
+                is FavoritesViewModel.UiState.ShowFavorites -> {
+                    favoritesAdapter.submitList(uiState.favorites)
+                    FLIPPER_CHILD_CHARACTERS
+                }
+                FavoritesViewModel.UiState.ShowEmpty -> {
+                    favoritesAdapter.submitList(emptyList())
+                    FLIPPER_CHILD_EMPTY
+                }
+            }
+        }
+
+        viewModel.getAll()
     }
 
     private fun initFavoritesAdapter() {
@@ -47,5 +65,10 @@ class FavoritesFragment : Fragment() {
             setHasFixedSize(true)
             adapter = favoritesAdapter
         }
+    }
+
+    companion object {
+        private const val FLIPPER_CHILD_CHARACTERS = 0
+        private const val FLIPPER_CHILD_EMPTY = 1
     }
 }
