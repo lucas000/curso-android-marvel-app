@@ -23,7 +23,7 @@ class CheckFavoriteUseCaseImpl @Inject constructor(
     override suspend fun doWork(params: CheckFavoriteUseCase.Params): ResultStatus<Boolean> {
         return withContext(dispatchers.io()) {
             val isFavorite = favoritesRepository.isFavorite(params.characterId)
-        
+
             ResultStatus.Success(isFavorite)
         }
     }
