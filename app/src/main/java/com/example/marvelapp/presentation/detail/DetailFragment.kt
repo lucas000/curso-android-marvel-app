@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
@@ -54,26 +53,6 @@ class DetailFragment : Fragment() {
         setAndObserveFavoriteUiState(detailViewArg)
     }
 
-    private fun setAndObserveFavoriteUiState(detailViewArg: DetailViewArg) {
-        binding.imageFavoriteIcon.setOnClickListener {
-            viewModel.favorite.update(detailViewArg)
-        }
-
-        viewModel.favorite.state.observe(viewLifecycleOwner) { uiState ->
-            binding.flipperDetail.displayedChild = when(uiState) {
-                FavoriteUiActionStateLiveData.UiState.Loading -> FLIPPER_FAVORITE_CHILD_POSITION_LOADING
-                is FavoriteUiActionStateLiveData.UiState.Icon -> {
-                    binding.imageFavoriteIcon.setImageResource(uiState.icon)
-                    FLIPPER_FAVORITE_CHILD_POSITION_IMAGE
-                }
-                is FavoriteUiActionStateLiveData.UiState.Error -> {
-                    showShortToast(uiState.messageResId)
-                    FLIPPER_FAVORITE_CHILD_POSITION_IMAGE
-                }
-            }
-        }
-    }
-
     private fun loadCategoriesAndObserveUiSate(detailViewArg: DetailViewArg) {
         viewModel.categories.load(detailViewArg.characterId)
         viewModel.categories.state.observe(viewLifecycleOwner) { uiState ->
@@ -95,6 +74,30 @@ class DetailFragment : Fragment() {
                 }
 
                 UiActionStateLiveData.UiState.Empty -> FLIPPER_CHILD_POSITION_EMPTY
+            }
+        }
+    }
+
+    private fun setAndObserveFavoriteUiState(detailViewArg: DetailViewArg) {
+        viewModel.favorite.run {
+            checkFavorite(detailViewArg.characterId)
+
+            binding.imageFavoriteIcon.setOnClickListener {
+                update(detailViewArg)
+            }
+
+            state.observe(viewLifecycleOwner) { uiState ->
+                binding.flipperDetail.displayedChild = when(uiState) {
+                    FavoriteUiActionStateLiveData.UiState.Loading -> FLIPPER_FAVORITE_CHILD_POSITION_LOADING
+                    is FavoriteUiActionStateLiveData.UiState.Icon -> {
+                        binding.imageFavoriteIcon.setImageResource(uiState.icon)
+                        FLIPPER_FAVORITE_CHILD_POSITION_IMAGE
+                    }
+                    is FavoriteUiActionStateLiveData.UiState.Error -> {
+                        showShortToast(uiState.messageResId)
+                        FLIPPER_FAVORITE_CHILD_POSITION_IMAGE
+                    }
+                }
             }
         }
     }
