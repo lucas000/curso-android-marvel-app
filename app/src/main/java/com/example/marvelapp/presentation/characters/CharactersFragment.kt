@@ -169,6 +169,8 @@ class CharactersFragment : Fragment() {
             )
 
             if (event == Lifecycle.Event.ON_RESUME && isSortingApplied) {
+                viewModel.applySort()
+
                 navBackStackEntry.savedStateHandle.remove<Boolean>(
                     SortFragment.SORTING_APPLIED_BASK_STACK_KEY
                 )
