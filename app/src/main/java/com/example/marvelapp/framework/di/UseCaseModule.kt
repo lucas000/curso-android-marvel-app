@@ -8,6 +8,8 @@ import com.example.core.usecase.AddFavoriteUseCase
 import com.example.core.usecase.AddFavoriteUseCaseImpl
 import com.example.core.usecase.CheckFavoriteUseCase
 import com.example.core.usecase.CheckFavoriteUseCaseImpl
+import com.example.core.usecase.GetCharactersSortingUseCase
+import com.example.core.usecase.GetCharactersSortingUseCaseImpl
 import com.example.core.usecase.GetFavoritesUseCase
 import com.example.core.usecase.GetFavoritesUseCaseUseCaseImpl
 import com.example.core.usecase.RemoveFavoriteUseCase
@@ -40,5 +42,10 @@ interface UseCaseModule {
 
     @Binds
     fun bindGetFavoritesUseCase(useCase: GetFavoritesUseCaseUseCaseImpl): GetFavoritesUseCase
+
+    @Binds
+    fun bindGetCharactersSortingUseCase(
+        useCase: GetCharactersSortingUseCaseImpl
+    ): GetCharactersSortingUseCase
 
 }
