@@ -56,7 +56,7 @@ class CharactersFragmentTest {
     fun shouldShowCharacters_whenViewIsCreated(): Unit = runBlocking {
         server.enqueue(MockResponse().setBody("characters_p1.json".asJsonString()))
         delay(500)
-        
+
         onView(
             withId(R.id.recycler_characters)
         ).check(
