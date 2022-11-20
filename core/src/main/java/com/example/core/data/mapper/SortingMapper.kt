@@ -20,4 +20,23 @@ class SortingMapper @Inject constructor() {
             else -> modifiedDescending
         }
     }
+
+    fun mapFromPair(sortingPair: Pair<String, String>): String {
+        val orderBy = sortingPair.first
+        val order = sortingPair.second
+
+        return when(orderBy) {
+            SortingType.ORDER_BY_NAME.value -> when(order) {
+                SortingType.ORDER_ASCENDING.value -> StorageConstants.ORDER_BY_NAME_ASCENDING
+                SortingType.ORDER_DESCENDING.value -> StorageConstants.ORDER_BY_NAME_DESCENDING
+                else -> { StorageConstants.ORDER_BY_NAME_ASCENDING }
+            }
+            SortingType.ORDER_BY_MODIFIED.value -> when(order) {
+                SortingType.ORDER_ASCENDING.value -> StorageConstants.ORDER_BY_MODIFIED_ASCENDING
+                SortingType.ORDER_DESCENDING.value -> StorageConstants.ORDER_BY_MODIFIED_DESCENDING
+                else -> { StorageConstants.ORDER_BY_MODIFIED_ASCENDING }
+            }
+            else -> StorageConstants.ORDER_BY_NAME_ASCENDING
+        }
+    }
 }
