@@ -4,7 +4,6 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.PagingSource
 import androidx.paging.map
 import com.example.core.data.repository.CharactersRemoteDataSource
 import com.example.core.data.repository.CharactersRepository
@@ -12,7 +11,6 @@ import com.example.core.domain.model.Character
 import com.example.core.domain.model.Comic
 import com.example.core.domain.model.Event
 import com.example.marvelapp.framework.db.AppDatabase
-import com.example.marvelapp.framework.paging.CharactersPageSource
 import com.example.marvelapp.framework.paging.CharactersRemoteMediator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
