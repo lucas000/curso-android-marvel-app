@@ -23,6 +23,7 @@ class CharactersRemoteMediator @Inject constructor(
     private val characterDao = database.characterDao()
     private val remoteKeyDao = database.remoteKeyDao()
 
+    @Suppress("ReturnCount")
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, CharacterEntity>
