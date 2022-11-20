@@ -1,15 +1,15 @@
 package com.example.marvelapp.presentation.sort
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.marvelapp.databinding.FragmentSortBinding
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SortFragment : Fragment() {
+class SortFragment : BottomSheetDialogFragment() {
 
     private var _binding: FragmentSortBinding? = null
     private val binding: FragmentSortBinding get() = _binding!!
