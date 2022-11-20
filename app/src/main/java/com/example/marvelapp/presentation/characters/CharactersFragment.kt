@@ -197,6 +197,11 @@ class CharactersFragment : Fragment(), SearchView.OnQueryTextListener,
 
         searchItem.setOnActionExpandListener(this)
 
+        if (viewModel.currentSearchQuery.isNotEmpty()) {
+            searchItem.expandActionView()
+            searchView.setQuery(viewModel.currentSearchQuery, false)
+        }
+
         searchView.run {
             isSubmitButtonEnabled = true
             setOnQueryTextListener(this@CharactersFragment)
