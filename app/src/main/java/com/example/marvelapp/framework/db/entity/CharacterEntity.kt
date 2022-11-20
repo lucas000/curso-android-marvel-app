@@ -8,7 +8,7 @@ import com.example.core.data.DbConstants
 @Entity(tableName = DbConstants.CHARACTERS_TABLE_NAME)
 data class CharacterEntity(
     @PrimaryKey(autoGenerate = true)
-    val autoId: Int,
+    val autoId: Int = 0,
     @ColumnInfo(name = DbConstants.CHARACTERS_COLUMN_INFO_ID)
     val id: Int,
     @ColumnInfo(name = DbConstants.CHARACTERS_COLUMN_INFO_NAME)

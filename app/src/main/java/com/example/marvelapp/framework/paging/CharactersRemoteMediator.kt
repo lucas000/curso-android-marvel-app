@@ -8,6 +8,7 @@ import androidx.room.withTransaction
 import com.example.core.data.repository.CharactersRemoteDataSource
 import com.example.marvelapp.framework.db.AppDatabase
 import com.example.marvelapp.framework.db.entity.CharacterEntity
+import com.example.marvelapp.framework.db.entity.RemoteKey
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
@@ -42,7 +43,42 @@ class CharactersRemoteMediator @Inject constructor(
                     remoteKey.nextOffset
                 }
             }
-            MediatorResult.Success(endOfPaginationReached = true)
+
+            val queries = hashMapOf(
+                "offset" to offset.toString()
+            )
+
+            if(query.isNotEmpty()) {
+                queries["nameStartsWith"] = query
+            }
+
+            val characterPaging = remoteDataSource.fetchCharacters(queries)
+
+            val responseOffset = characterPaging.offset
+            val totalCharacters = characterPaging.total
+
+            database.withTransaction {
+                if (loadType == LoadType.REFRESH) {
+                    remoteKeyDao.clearAll()
+                    characterDao.clearAll()
+                }
+
+                remoteKeyDao.insertOrReplace(
+                    RemoteKey(nextOffset = responseOffset + state.config.pageSize)
+                )
+
+                val charactersEntities = characterPaging.characters.map {
+                    CharacterEntity(
+                        id = it.id,
+                        name = it.name,
+                        imageUrl = it.imageUrl
+                    )
+                }
+
+                characterDao.insertAll(charactersEntities)
+            }
+
+            MediatorResult.Success(endOfPaginationReached = responseOffset >= totalCharacters)
         } catch (e: IOException) {
             MediatorResult.Error(e)
         } catch (e: HttpException) {
