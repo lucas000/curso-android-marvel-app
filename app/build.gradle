@@ -154,7 +154,7 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso_version"
 
     // Fragment Testing
-    def fragment_version = "1.5.3"
+    def fragment_version = "1.4.0"
     debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
 
     // For instrumented tests.
